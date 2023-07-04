@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog as fd
 from tkinter.messagebox import showinfo
-from PIL import Image
+from PIL import Image, ImageFilter
 import PIL.ImageOps 
 
 class main:
@@ -79,6 +79,11 @@ class main:
         #image2.save("filename.png")
         image2.show()
 
+    def edge_ehance(self):
+        image=Image.open(self.filename)
+        image2 = image.filter(ImageFilter.EDGE_ENHANCE)
+        image2.show()
+
     def run(self):
         """ Main function
         """
@@ -112,11 +117,18 @@ class main:
             text='Transparancy',
             command=self.transparancy
         )
+        # edge ehance button
+        edge_ehance_button = ttk.Button(
+            root,
+            text='Edge Ehance',
+            command=self.edge_ehance
+        )
         # pack widgets
         open_button.pack(expand=True)
         multiplicate_button.pack(expand=True)
         invert_button.pack(expand=True)
         transparency_button.pack(expand=True)
+        edge_ehance_button.pack(expand=True)
         # run the application
         root.mainloop()
 
