@@ -35,7 +35,7 @@ class main:
         photo=Image.open(self.filename)
         # Get image size
         L,H=photo.size
-        iterations=int(input("Entrez le nombre d'itérations"))
+        iterations=int(input("Enter number of iterations: "))
         for n in range(0,iterations,1):
             for y in range(0,H,1):
                 for x in range(0,L,1):
@@ -52,6 +52,7 @@ class main:
                 for i in range(0,L,1):
                     ro,ve,bl=photo.getpixel((i,j))
                     photo.putpixel((i,j+H//2),(ro,ve,bl))
+        print("iterations: ",n+1)
         photo.show()
 
     def invert(self):
@@ -89,7 +90,8 @@ class main:
         """
         # create the root window
         root = tk.Tk()
-        root.title('Tkinter Open File Dialog')
+        root.title('Image editing scripts')
+        root.iconbitmap("hm.ico")
         root.resizable(False, False)
         root.geometry('300x150')
         root.eval('tk::PlaceWindow . center')
