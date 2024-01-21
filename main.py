@@ -16,6 +16,7 @@ class main:
         filetypes = (
             ('image files', '.png'),
             ('image files', '.jpg'),
+            ('GIF image files', '.gif'),
         )
 
         self.filename = fd.askopenfilename(
@@ -81,9 +82,40 @@ class main:
         image2.show()
 
     def edge_ehance(self):
+        """ Ehance edge
+        """
         image=Image.open(self.filename)
         image2 = image.filter(ImageFilter.EDGE_ENHANCE)
         image2.show()
+        
+    def pixelate(self):
+        """ Pixelate image
+        """
+        # Open image
+        img = Image.open(self.filename)
+        # Resize smoothly down to 64x64 pixels
+        img_small = img.resize((64,64), resample=Image.Resampling.BILINEAR)
+        # Scale back up using NEAREST to original size
+        result = img_small.resize(img.size, Image.Resampling.NEAREST)
+        result.show()
+    
+    def pixelate_gif(self):
+        """ Pixelate each frame of GIF image
+        """
+        images = []
+        gif = Image.open(self.filename)
+        # Process each frame of GIF image
+        number_frames = gif.n_frames
+        for frame in range(number_frames):
+            gif.seek(frame)
+            img = gif.copy()
+            # Resize smoothly down to 128x128 pixels
+            img_small = img.resize((128,128), resample=Image.Resampling.BILINEAR)
+            # Scale back up using NEAREST to original size
+            result = img_small.resize(img.size, Image.Resampling.NEAREST)
+            images.append(result)
+        images[0].save('pillow.gif', save_all = True, append_images = images[1:],  optimize = False)
+        print("GIF created")
 
     def run(self):
         """ Main function
@@ -93,7 +125,7 @@ class main:
         root.title('Image editing scripts')
         root.iconbitmap("hm.ico")
         root.resizable(False, False)
-        root.geometry('300x150')
+        root.geometry('300x300')
         root.eval('tk::PlaceWindow . center')
         # open button
         open_button = ttk.Button(
@@ -125,12 +157,26 @@ class main:
             text='Edge Ehance',
             command=self.edge_ehance
         )
+        # pixelate button
+        pixelate_button = ttk.Button(
+            root,
+            text='Pixelate',
+            command=self.pixelate
+        )
+        # pixelate gif button
+        pixelate_gif_button = ttk.Button(
+            root,
+            text='Pixelate_GIF',
+            command=self.pixelate_gif
+        )
         # pack widgets
         open_button.pack(expand=True)
         multiplicate_button.pack(expand=True)
         invert_button.pack(expand=True)
         transparency_button.pack(expand=True)
         edge_ehance_button.pack(expand=True)
+        pixelate_button.pack(expand=True)
+        pixelate_gif_button.pack(expand=True)
         # run the application
         root.mainloop()
 
