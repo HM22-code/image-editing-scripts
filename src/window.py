@@ -27,6 +27,7 @@ class Window:
         edge_ehance_button = ttk.Button(self.root, text='Edge Ehance', command= lambda: edit.edge_ehance(self.filename))
         pixelate_button = ttk.Button(self.root, text='Pixelate', command= lambda: edit.pixelate(self.filename))
         pixelate_gif_button = ttk.Button(self.root, text='Pixelate_GIF', command= lambda: edit.pixelate_gif(self.filename))
+        extract_img_gif_button = ttk.Button(self.root, text='Extract_img_GIF', command= lambda: edit.extract_img_gif(self.filename))
         open_button.pack(expand=True)
         multiplicate_button.pack(expand=True)
         invert_button.pack(expand=True)
@@ -34,6 +35,7 @@ class Window:
         edge_ehance_button.pack(expand=True)
         pixelate_button.pack(expand=True)
         pixelate_gif_button.pack(expand=True)
+        extract_img_gif_button.pack(expand=True)
     
     def run(self):
         """ Run the window

@@ -90,3 +90,16 @@ def pixelate_gif(filename):
         frames.append(result)
     frames[0].save('pixelate.gif', save_all = True, append_images = frames[1:],  optimize = False)
     frames[0].show()
+    
+def extract_img_gif(filename):
+    """ get png of each frame of GIF image
+    """
+    gif = Image.open(filename)
+    name = str(input("name: "))
+    # Process each frame of GIF image
+    number_frames = gif.n_frames
+    for frame in range(number_frames):
+        gif.seek(frame)
+        img = gif.copy()
+        file = str(name)+"-"+str(frame)+".png"
+        img.save(file)
