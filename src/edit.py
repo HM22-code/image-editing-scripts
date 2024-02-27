@@ -24,7 +24,7 @@ def multiplicate(filename):
             for i in range(0,W,1):
                 r,g,b=img.getpixel((i,j))
                 img.putpixel((i,j+H//2),(r,g,b))
-    img.save("multiplicate.png")
+    img.save("multiplicate-" + str(n) + ".png")
     img.show()
 
 def invert(filename):
