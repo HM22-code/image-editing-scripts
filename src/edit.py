@@ -69,9 +69,27 @@ def emboss(filename):
     """ Emboss
     """
     image=Image.open(filename)
+    image = image.convert('RGB')
     image2 = image.filter(ImageFilter.EMBOSS)
     image2.save("emboss.png")
     print("emboss done")
+
+def emboss_gif(filename):
+    """ Emboss each frame of GIF image
+    """
+    frames = []
+    gif = Image.open(filename)
+    # Process each frame of GIF image
+    number_frames = gif.n_frames
+    for frame in range(number_frames):
+        gif.seek(frame)
+        img = gif.copy()
+        img = img.convert('RGB')
+        result = img.filter(ImageFilter.EMBOSS)
+        frames.append(result)
+    frames[0].save('emboss.gif', save_all = True, append_images = frames[1:],  optimize = False)
+    print("emboss gif done")
+    frames[0].show()
 
 def pixelate(filename):
     """ Pixelate image
