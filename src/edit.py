@@ -1,7 +1,7 @@
 import string
 from PIL import Image, ImageFilter
-import PIL.ImageOps 
-   
+import PIL.ImageOps
+
 def multiplicate(filename):
     """ Multiplicate an image inside herself
     """
@@ -60,7 +60,7 @@ def edge_ehance(filename):
     image2 = image.filter(ImageFilter.EDGE_ENHANCE)
     image2.save("edge_ehance.png")
     image2.show()
-    
+
 def pixelate(filename):
     """ Pixelate image
     """
@@ -90,7 +90,7 @@ def pixelate_gif(filename):
         frames.append(result)
     frames[0].save('pixelate.gif', save_all = True, append_images = frames[1:],  optimize = False)
     frames[0].show()
-    
+
 def extract_img_gif(filename):
     """ get png of each frame of GIF image
     """

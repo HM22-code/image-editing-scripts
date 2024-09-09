@@ -6,7 +6,6 @@ import edit
 import config
 
 class Window:
-    
     def __init__(self):
         self.filename = None
         self.root = tk.Tk()
@@ -16,7 +15,7 @@ class Window:
         self.root.geometry(config.GEOMETRY)
         self.root.eval(config.EVAL)
         self.pack_widgets()
-    
+
     def pack_widgets(self):
         """ Init widgets
         """
@@ -36,12 +35,12 @@ class Window:
         pixelate_button.pack(expand=True)
         pixelate_gif_button.pack(expand=True)
         extract_img_gif_button.pack(expand=True)
-    
+
     def run(self):
         """ Run the window
         """
         self.root.mainloop()
-    
+
     def select_files(self):
         """ Open file dialog and show selected file
         """
@@ -59,4 +58,3 @@ class Window:
             title='Selected File',
             message=self.filename
         )
-    
