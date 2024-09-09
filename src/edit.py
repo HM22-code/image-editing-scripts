@@ -25,6 +25,7 @@ def multiplicate(filename):
                 r,g,b=img.getpixel((i,j))
                 img.putpixel((i,j+H//2),(r,g,b))
     img.save("multiplicate-" + str(n) + ".png")
+    print("multiplicate done")
     img.show()
 
 def invert(filename):
@@ -33,6 +34,7 @@ def invert(filename):
     image=Image.open(filename)
     image2 = PIL.ImageOps.invert(image)
     image2.save("invert.png")
+    print("invert done")
     image2.show()
 
 def transparancy(filename):
@@ -51,6 +53,7 @@ def transparancy(filename):
                 a=255
             image2.putpixel((x,y),(p[0],p[1],p[2],a))
     image2.save("transparency.png")
+    print("transparency done")
     image2.show()
 
 def edge_ehance(filename):
@@ -59,6 +62,7 @@ def edge_ehance(filename):
     image=Image.open(filename)
     image2 = image.filter(ImageFilter.EDGE_ENHANCE)
     image2.save("edge_ehance.png")
+    print("edge ehance done")
     image2.show()
 
 def emboss(filename):
@@ -67,6 +71,7 @@ def emboss(filename):
     image=Image.open(filename)
     image2 = image.filter(ImageFilter.EMBOSS)
     image2.save("emboss.png")
+    print("emboss done")
 
 def pixelate(filename):
     """ Pixelate image
@@ -78,6 +83,7 @@ def pixelate(filename):
     # Scale back up using NEAREST to original size
     result = img_small.resize(img.size, Image.Resampling.NEAREST)
     result.save("pixelate.png")
+    print("pixelate done")
     result.show()
 
 def pixelate_gif(filename):
@@ -96,6 +102,7 @@ def pixelate_gif(filename):
         result = img_small.resize(img.size, Image.Resampling.NEAREST)
         frames.append(result)
     frames[0].save('pixelate.gif', save_all = True, append_images = frames[1:],  optimize = False)
+    print("pixelate gif done")
     frames[0].show()
 
 def extract_img_gif(filename):
@@ -110,3 +117,4 @@ def extract_img_gif(filename):
         img = gif.copy()
         file = str(name)+"-"+str(frame)+".png"
         img.save(file)
+    print("extract img done")
