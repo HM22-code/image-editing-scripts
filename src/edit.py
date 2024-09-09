@@ -37,7 +37,7 @@ def invert(filename):
     print("invert done")
     image2.show()
 
-def transparancy(filename):
+def transparency(filename):
     """ Remove white pixel and replace it with transparent pixel
     """
     image=Image.open(filename)

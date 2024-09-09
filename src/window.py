@@ -22,7 +22,7 @@ class Window:
         open_button = ttk.Button(self.root, text='Open a File', command=self.select_files)
         multiplicate_button = ttk.Button(self.root, text='Multiplicate', command= lambda: edit.multiplicate(self.filename))
         invert_button = ttk.Button(self.root, text='Invert', command= lambda: edit.invert(self.filename))
-        transparency_button = ttk.Button(self.root, text='Transparancy', command= lambda: edit.transparancy(self.filename))
+        transparency_button = ttk.Button(self.root, text='Transparency', command= lambda: edit.transparency(self.filename))
         edge_ehance_button = ttk.Button(self.root, text='Edge Ehance', command= lambda: edit.edge_ehance(self.filename))
         emboss_button = ttk.Button(self.root, text='Emboss', command= lambda: edit.emboss(self.filename))
         pixelate_button = ttk.Button(self.root, text='Pixelate', command= lambda: edit.pixelate(self.filename))
