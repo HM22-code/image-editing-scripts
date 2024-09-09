@@ -61,6 +61,13 @@ def edge_ehance(filename):
     image2.save("edge_ehance.png")
     image2.show()
 
+def emboss(filename):
+    """ Emboss
+    """
+    image=Image.open(filename)
+    image2 = image.filter(ImageFilter.EMBOSS)
+    image2.save("emboss.png")
+
 def pixelate(filename):
     """ Pixelate image
     """
