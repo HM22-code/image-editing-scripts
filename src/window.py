@@ -29,6 +29,7 @@ class Window:
         pixelate_button = ttk.Button(self.root, text='Pixelate', command= lambda: edit.pixelate(self.filename))
         pixelate_gif_button = ttk.Button(self.root, text='Pixelate_GIF', command= lambda: edit.pixelate_gif(self.filename))
         extract_img_gif_button = ttk.Button(self.root, text='Extract_img_GIF', command= lambda: edit.extract_img_gif(self.filename))
+        comic_button = ttk.Button(self.root, text='Comic', command= lambda: edit.comic(self.filename))
         open_button.pack(expand=True)
         multiplicate_button.pack(expand=True)
         invert_button.pack(expand=True)
@@ -39,6 +40,7 @@ class Window:
         pixelate_button.pack(expand=True)
         pixelate_gif_button.pack(expand=True)
         extract_img_gif_button.pack(expand=True)
+        comic_button.pack(expand=True)
 
     def run(self):
         """ Run the window

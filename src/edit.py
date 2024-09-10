@@ -1,5 +1,5 @@
 import string
-from PIL import Image, ImageFilter
+from PIL import Image, ImageFilter, ImageDraw, ImageFont
 import PIL.ImageOps
 
 def multiplicate(filename):
@@ -136,3 +136,34 @@ def extract_img_gif(filename):
         file = str(name)+"-"+str(frame)+".png"
         img.save(file)
     print("extract img done")
+
+def apply_comic_filters(image):
+    # Apply a series of filters to achieve the comic book style
+    cartoon_image = image.copy()
+    cartoon_image = cartoon_image.convert("L")
+    # cartoon_image = cartoon_image.point(lambda p: 255 if p > 128 else 0)
+    cartoon_image = cartoon_image.filter(ImageFilter.CONTOUR)
+    cartoon_image = cartoon_image.filter(ImageFilter.SMOOTH_MORE)
+    return cartoon_image
+
+def add_text_overlay(image, text):
+    # Add text overlay to the image
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.load_default()  # You can also load custom fonts
+    text_position = (20, 20)  # Position of the text overlay
+    draw.text(text_position, text, font=font)
+    return image
+
+def comic(filename):
+    """ Comic image
+    """
+    # Open image
+    img = Image.open(filename)
+    # Apply comic book filters
+    result = apply_comic_filters(img)
+    # Add text overlay
+    # text = "This is a comic book style image!"
+    # result = add_text_overlay(comic_image, text)
+    result.save("comic.png")
+    print("comic done")
+    result.show()
