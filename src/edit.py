@@ -211,3 +211,111 @@ def segmented(filename):
     segmented.save("segmented.png")
     print("segmented done")
     segmented.show()
+
+def watermarklogo(filename):
+    img_logo = Image.open(filename)
+    img = Image.open(filename)
+    img_logo.show()
+    # convert image to black and white (grayscale)
+    img_logo = img_logo.convert("L")
+    threshold = 50
+    img_logo = img_logo.point(lambda x: 255 if x > threshold else 0)
+    img_logo = img_logo.resize((img_logo.width // 2, img_logo.height // 2))
+    img_logo = img_logo.filter(ImageFilter.CONTOUR)
+    img_logo.show()
+    img_logo = img_logo.point(lambda x: 0 if x == 255 else 255)
+    img_logo.show()
+    img.paste(img_logo, (480, 160), img_logo)
+    img.show()
+
+def watermarkbackground(filename):
+    # open image to apply watermark to
+    img = Image.open(filename)
+    img.convert("RGB")
+    # get image size
+    img_width, img_height = img.size
+    # 5 by 4 water mark grid
+    wm_size = (int(img_width * 0.20), int(img_height * 0.25))
+    wm_txt = Image.new("RGBA", wm_size, (255, 255, 255, 0))
+    # set text size, 1:40 of the image width
+    font_size = int(img_width / 40)
+    # load font e.g. gotham-bold.ttf
+    font = ImageFont.truetype(ImageFont.load_default(), font_size)
+    d = ImageDraw.Draw(wm_txt)
+    wm_text = "Name"
+    # centralize text
+    left = (wm_size[0] - font.getsize(wm_text)[0]) / 2
+    top = (wm_size[1] - font.getsize(wm_text)[1]) / 2
+    # RGBA(0, 0, 0, alpha) is black
+    # alpha channel specifies the opacity for a colour
+    alpha = 75
+    # write text on blank wm_text image
+    d.text((left, top), wm_text, fill=(0, 0, 0, alpha), font=font)
+    # uncomment to rotate watermark text
+    # wm_txt = wm_txt.rotate(15,  expand=1)
+    # wm_txt = wm_txt.resize(wm_size, Image.ANTIALIAS)
+    for i in range(0, img_width, wm_txt.size[0]):
+        for j in range(0, img_height, wm_txt.size[1]):
+            img.paste(wm_txt, (i, j), wm_txt)
+    # save image with watermark
+    img.save("watermark.png")
+    # show image with watermark in preview
+    img.show()
+
+def watermarktext(filename):
+    # open image to apply watermark to
+    img = Image.open(filename)
+    img.convert("RGB")
+    # get image size
+    img_width, img_height = img.size
+    # 5 by 4 water mark grid
+    wm_size = (int(img_width * 0.20), int(img_height * 0.25))
+    wm_txt = Image.new("RGBA", wm_size, (255, 255, 255, 0))
+    # set text size, 1:40 of the image width
+    font_size = int(img_width / 40)
+    # load font e.g. gotham-bold.ttf
+    font = ImageFont.truetype(ImageFont.load_default(), font_size)
+    d = ImageDraw.Draw(wm_txt)
+    wm_text = "Name"
+    # centralize text
+    left = (wm_size[0] - font.getsize(wm_text)[0]) / 2
+    top = (wm_size[1] - font.getsize(wm_text)[1]) / 2
+    # RGBA(0, 0, 0, alpha) is black
+    # alpha channel specifies the opacity for a colour
+    alpha = 75
+    # write text on blank wm_text image
+    d.text((left, top), wm_text, fill=(0, 0, 0, alpha), font=font)
+    # uncomment to rotate watermark text
+    # wm_txt = wm_txt.rotate(15,  expand=1)
+    # wm_txt = wm_txt.resize(wm_size, Image.ANTIALIAS)
+    img.paste(wm_txt, (0, 0), wm_txt)
+    # save image with watermark
+    img.save("watermark.png")
+    # show image with watermark in preview
+    img.show()
+
+def resize_and_watermark(input_folder, output_folder, target_size, watermark_path):
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+    watermark = Image.open(watermark_path).convert("RGBA")
+    for filename in os.listdir(input_folder):
+        if filename.endswith((".png", ".jpg", ".jpeg")):
+            input_path = os.path.join(input_folder, filename)
+            output_path = os.path.join(output_folder, filename)
+            img = Image.open(input_path)
+            img = img.resize(target_size, Image.ANTIALIAS)
+            watermark_position = (img.width - watermark.width, img.height - watermark.height)
+            img.paste(watermark, watermark_position, watermark)
+            img.save(output_path)
+
+def thumbnail(filename):
+    # open image
+    img = Image.open(filename)
+    # set the maximum width and height for the thumbnail
+    max_thumbnail_size = (200, 200)
+    # applying size for thumbnail
+    img.thumbnail(max_thumbnail_size)
+    # creating thumbnail
+    img.save("thumbnail.png")
+    # show image in preview
+    img.show()
