@@ -3,10 +3,9 @@ import os
 from PIL import Image, ImageFilter, ImageDraw, ImageFont
 import PIL.ImageOps
 
-def multiplicate(filename):
+def multiplicate(img):
     """ Multiplicate an image inside herself
     """
-    img=Image.open(filename)
     W,H=img.size
     IT=int(input("Enter number of iterations: "))
     for n in range(0,IT,1):
@@ -29,21 +28,19 @@ def multiplicate(filename):
     print("multiplicate done")
     img.show()
 
-def invert(filename):
+def invert(img):
     """ Invert Colors of image
     """
-    image=Image.open(filename)
-    image2 = PIL.ImageOps.invert(image)
-    image2.save("invert.png")
+    image = PIL.ImageOps.invert(img)
+    image.save("invert.png")
     print("invert done")
-    image2.show()
+    image.show()
 
-def transparency(filename):
+def transparency(img):
     """ Remove white pixel and replace it with transparent pixel
     """
-    image=Image.open(filename)
-    L,H=image.size
-    image1=image.convert("RGBA")
+    L,H=img.size
+    image1=img.convert("RGBA")
     image2=Image.new("RGBA",(L,H))
     for x in range (L):
         for y in range (H):
@@ -57,29 +54,26 @@ def transparency(filename):
     print("transparency done")
     image2.show()
 
-def edge_ehance(filename):
+def edge_ehance(img):
     """ Ehance edge
     """
-    image=Image.open(filename)
-    image2 = image.filter(ImageFilter.EDGE_ENHANCE)
-    image2.save("edge_ehance.png")
+    image = img.filter(ImageFilter.EDGE_ENHANCE)
+    image.save("edge_ehance.png")
     print("edge ehance done")
-    image2.show()
+    image.show()
 
-def emboss(filename):
+def emboss(img):
     """ Emboss
     """
-    image=Image.open(filename)
-    image = image.convert('RGB')
-    image2 = image.filter(ImageFilter.EMBOSS)
-    image2.save("emboss.png")
+    img = img.convert('RGB')
+    image = img.filter(ImageFilter.EMBOSS)
+    image.save("emboss.png")
     print("emboss done")
 
-def emboss_gif(filename):
+def emboss_gif(gif):
     """ Emboss each frame of GIF image
     """
     frames = []
-    gif = Image.open(filename)
     # Process each frame of GIF image
     number_frames = gif.n_frames
     for frame in range(number_frames):
@@ -92,11 +86,9 @@ def emboss_gif(filename):
     print("emboss gif done")
     frames[0].show()
 
-def pixelate(filename):
+def pixelate(img):
     """ Pixelate image
     """
-    # Open image
-    img = Image.open(filename)
     # Resize smoothly down to 64x64 pixels
     img_small = img.resize((64,64), resample=Image.Resampling.BILINEAR)
     # Scale back up using NEAREST to original size
@@ -105,11 +97,10 @@ def pixelate(filename):
     print("pixelate done")
     result.show()
 
-def pixelate_gif(filename):
+def pixelate_gif(gif):
     """ Pixelate each frame of GIF image
     """
     frames = []
-    gif = Image.open(filename)
     # Process each frame of GIF image
     number_frames = gif.n_frames
     for frame in range(number_frames):
@@ -124,10 +115,9 @@ def pixelate_gif(filename):
     print("pixelate gif done")
     frames[0].show()
 
-def extract_img_gif(filename):
+def extract_img_gif(gif):
     """ get png of each frame of GIF image
     """
-    gif = Image.open(filename)
     name = str(input("name: "))
     # Process each frame of GIF image
     number_frames = gif.n_frames
@@ -155,25 +145,19 @@ def add_text_overlay(image, text):
     draw.text(text_position, text, font=font)
     return image
 
-def comic(filename):
+def comic(img):
     """ Comic image
     """
-    # Open image
-    img = Image.open(filename)
     # Apply comic book filters
     result = apply_comic_filters(img)
-    # Add text overlay
-    # text = "This is a comic book style image!"
-    # result = add_text_overlay(comic_image, text)
     result.save("comic.png")
     print("comic done")
     result.show()
 
-def comic_gif(filename):
+def comic_gif(gif):
     """ Comic each frame of GIF image
     """
     frames = []
-    gif = Image.open(filename)
     # Process each frame of GIF image
     number_frames = gif.n_frames
     for frame in range(number_frames):
@@ -196,11 +180,10 @@ def dilate(cycles, image):
         image = image.filter(ImageFilter.MaxFilter(3))
     return image
 
-def segmented(filename):
+def segmented(img):
     """ Segmented image
     """
     # Open image
-    img = Image.open(filename)
     step_1 = erode(12, img)
     step_2 = dilate(58, step_1)
     mask = erode(45, step_2)
@@ -212,9 +195,7 @@ def segmented(filename):
     print("segmented done")
     segmented.show()
 
-def watermarklogo(filename):
-    img_logo = Image.open(filename)
-    img = Image.open(filename)
+def watermarklogo(img):
     img_logo.show()
     # convert image to black and white (grayscale)
     img_logo = img_logo.convert("L")
@@ -228,9 +209,7 @@ def watermarklogo(filename):
     img.paste(img_logo, (480, 160), img_logo)
     img.show()
 
-def watermarkbackground(filename):
-    # open image to apply watermark to
-    img = Image.open(filename)
+def watermarkbackground(img):
     img.convert("RGB")
     # get image size
     img_width, img_height = img.size
@@ -262,9 +241,7 @@ def watermarkbackground(filename):
     # show image with watermark in preview
     img.show()
 
-def watermarktext(filename):
-    # open image to apply watermark to
-    img = Image.open(filename)
+def watermarktext(img):
     img.convert("RGB")
     # get image size
     img_width, img_height = img.size
@@ -308,9 +285,7 @@ def resize_and_watermark(input_folder, output_folder, target_size, watermark_pat
             img.paste(watermark, watermark_position, watermark)
             img.save(output_path)
 
-def thumbnail(filename):
-    # open image
-    img = Image.open(filename)
+def thumbnail(img):
     # set the maximum width and height for the thumbnail
     max_thumbnail_size = (200, 200)
     # applying size for thumbnail

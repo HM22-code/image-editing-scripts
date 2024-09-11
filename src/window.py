@@ -4,10 +4,13 @@ from tkinter import filedialog as fd
 from tkinter.messagebox import showinfo
 import edit
 import config
+from PIL import Image
 
 class Window:
     def __init__(self):
         self.filename = None
+        self.original_image = None
+        self.filtered_image = None
         self.root = tk.Tk()
         self.root.title(config.TITLE)
         self.root.iconbitmap(config.ICONBITMAP)
@@ -21,29 +24,29 @@ class Window:
         """
         open_button = ttk.Button(self.root, text='Open a File', command=self.select_files)
         open_button.pack(expand=True)
-        multiplicate_button = ttk.Button(self.root, text='Multiplicate', command= lambda: edit.multiplicate(self.filename))
+        multiplicate_button = ttk.Button(self.root, text='Multiplicate', command= lambda: edit.multiplicate(self.filtered_image))
         multiplicate_button.pack(expand=True)
-        invert_button = ttk.Button(self.root, text='Invert', command= lambda: edit.invert(self.filename))
+        invert_button = ttk.Button(self.root, text='Invert', command= lambda: edit.invert(self.filtered_image))
         invert_button.pack(expand=True)
-        transparency_button = ttk.Button(self.root, text='Transparency', command= lambda: edit.transparency(self.filename))
+        transparency_button = ttk.Button(self.root, text='Transparency', command= lambda: edit.transparency(self.filtered_image))
         transparency_button.pack(expand=True)
-        edge_ehance_button = ttk.Button(self.root, text='Edge Ehance', command= lambda: edit.edge_ehance(self.filename))
+        edge_ehance_button = ttk.Button(self.root, text='Edge Ehance', command= lambda: edit.edge_ehance(self.filtered_image))
         edge_ehance_button.pack(expand=True)
-        emboss_button = ttk.Button(self.root, text='Emboss', command= lambda: edit.emboss(self.filename))
+        emboss_button = ttk.Button(self.root, text='Emboss', command= lambda: edit.emboss(self.filtered_image))
         emboss_button.pack(expand=True)
-        emboss_gif_button = ttk.Button(self.root, text='Emboss_GIF', command= lambda: edit.emboss_gif(self.filename))
+        emboss_gif_button = ttk.Button(self.root, text='Emboss_GIF', command= lambda: edit.emboss_gif(self.filtered_image))
         emboss_gif_button.pack(expand=True)
-        pixelate_button = ttk.Button(self.root, text='Pixelate', command= lambda: edit.pixelate(self.filename))
+        pixelate_button = ttk.Button(self.root, text='Pixelate', command= lambda: edit.pixelate(self.filtered_image))
         pixelate_button.pack(expand=True)
-        pixelate_gif_button = ttk.Button(self.root, text='Pixelate_GIF', command= lambda: edit.pixelate_gif(self.filename))
+        pixelate_gif_button = ttk.Button(self.root, text='Pixelate_GIF', command= lambda: edit.pixelate_gif(self.filtered_image))
         pixelate_gif_button.pack(expand=True)
-        extract_img_gif_button = ttk.Button(self.root, text='Extract_img_GIF', command= lambda: edit.extract_img_gif(self.filename))
+        extract_img_gif_button = ttk.Button(self.root, text='Extract_GIF', command= lambda: edit.extract_img_gif(self.filtered_image))
         extract_img_gif_button.pack(expand=True)
-        comic_button = ttk.Button(self.root, text='Comic', command= lambda: edit.comic(self.filename))
+        comic_button = ttk.Button(self.root, text='Comic', command= lambda: edit.comic(self.filtered_image))
         comic_button.pack(expand=True)
-        comic_gif_button = ttk.Button(self.root, text='Comic_GIF', command= lambda: edit.comic_gif(self.filename))
+        comic_gif_button = ttk.Button(self.root, text='Comic_GIF', command= lambda: edit.comic_gif(self.filtered_image))
         comic_gif_button.pack(expand=True)
-        segmented_button = ttk.Button(self.root, text='Segmented', command= lambda: edit.segmented(self.filename))
+        segmented_button = ttk.Button(self.root, text='Segmented', command= lambda: edit.segmented(self.filtered_image))
         segmented_button.pack(expand=True)
 
     def run(self):
@@ -57,14 +60,16 @@ class Window:
         filetypes = (
             ('image files', '.png'),
             ('image files', '.jpg'),
-            ('GIF image files', '.gif'),
+            ('image files', '.gif'),
         )
         self.filename = fd.askopenfilename(
             title='Open a file',
             initialdir='/',
             filetypes=filetypes
         )
-        showinfo(
-            title='Selected File',
-            message=self.filename
-        )
+        if self.filename:
+            self.original_image = Image.open(self.filename)
+            self.filtered_image = self.original_image.copy()
+            showinfo(title='Selected File', message=self.filename)
+        else:
+            showinfo(title='Selected File', message='No file selected.')
