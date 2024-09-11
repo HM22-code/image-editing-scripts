@@ -1,4 +1,5 @@
 import string
+import os
 from PIL import Image, ImageFilter, ImageDraw, ImageFont
 import PIL.ImageOps
 
@@ -167,3 +168,46 @@ def comic(filename):
     result.save("comic.png")
     print("comic done")
     result.show()
+
+def comic_gif(filename):
+    """ Comic each frame of GIF image
+    """
+    frames = []
+    gif = Image.open(filename)
+    # Process each frame of GIF image
+    number_frames = gif.n_frames
+    for frame in range(number_frames):
+        gif.seek(frame)
+        img = gif.copy()
+        img = img.convert('RGB')
+        result = apply_comic_filters(img)
+        frames.append(result)
+    frames[0].save('comic.gif', save_all = True, append_images = frames[1:],  optimize = False)
+    print("comic gif done")
+    frames[0].show()
+
+def erode(cycles, image):
+    for _ in range(cycles):
+        image = image.filter(ImageFilter.MinFilter(3))
+    return image
+
+def dilate(cycles, image):
+    for _ in range(cycles):
+        image = image.filter(ImageFilter.MaxFilter(3))
+    return image
+
+def segmented(filename):
+    """ Segmented image
+    """
+    # Open image
+    img = Image.open(filename)
+    step_1 = erode(12, img)
+    step_2 = dilate(58, step_1)
+    mask = erode(45, step_2)
+    mask = mask.convert("L")
+    mask = mask.filter(ImageFilter.BoxBlur(20))
+    blank = img.point(lambda _: 0)
+    segmented = Image.composite(img, blank, mask)
+    segmented.save("segmented.png")
+    print("segmented done")
+    segmented.show()
