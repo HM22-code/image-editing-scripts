@@ -4,7 +4,7 @@ from tkinter import filedialog as fd
 from tkinter.messagebox import showinfo
 import edit
 import config
-from PIL import Image
+from PIL import Image, ImageTk
 
 class Window:
     def __init__(self):
@@ -22,6 +22,8 @@ class Window:
     def pack_widgets(self):
         """ Init widgets
         """
+        self.canvas = tk.Canvas(self.root, width=500, height=500)
+        self.canvas.pack()
         open_button = ttk.Button(self.root, text='Open a File', command=self.select_files)
         open_button.pack(expand=True)
         multiplicate_button = ttk.Button(self.root, text='Multiplicate', command= lambda: edit.multiplicate(self.filtered_image))
@@ -49,6 +51,12 @@ class Window:
         segmented_button = ttk.Button(self.root, text='Segmented', command= lambda: edit.segmented(self.filtered_image))
         segmented_button.pack(expand=True)
 
+    def show_image(self):
+        self.filtered_image.thumbnail((500, 500))
+        photo = ImageTk.PhotoImage(self.filtered_image)
+        self.canvas.create_image(0, 0, anchor=tk.NW, image=photo)
+        self.canvas.image = photo
+
     def run(self):
         """ Run the window
         """
@@ -71,5 +79,6 @@ class Window:
             self.original_image = Image.open(self.filename)
             self.filtered_image = self.original_image.copy()
             showinfo(title='Selected File', message=self.filename)
+            self.show_image()
         else:
             showinfo(title='Selected File', message='No file selected.')
