@@ -2,10 +2,10 @@ import tkinter as tk
 from tkinter import filedialog
 from PIL import Image, ImageTk, ImageFilter, ImageEnhance
 
-class InstagramFilterApp:
+class ImageFilterApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Instagram-like Filters")
+        self.root.title("Image filter scripts")
 
         self.original_image = None
         self.filtered_image = None
@@ -91,5 +91,5 @@ class InstagramFilterApp:
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = InstagramFilterApp(root)
+    app = ImageFilterApp(root)
     root.mainloop()
