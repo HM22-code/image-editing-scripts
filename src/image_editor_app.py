@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog as fd
+from tkinter import messagebox as mb
 from tkinter.messagebox import showinfo
 import edit
 from PIL import Image, ImageTk
@@ -17,7 +18,7 @@ class ImageEditorApp:
         self.root.title("Image editing scripts")
         self.root.iconbitmap("assets/favicon.ico")
         self.root.resizable(False, False)
-        self.root.geometry("500x500")
+        self.root.geometry("500x700")
         self.root.eval("tk::PlaceWindow . center")
         self.root.config(bg="#f0f0f0")
 
@@ -30,8 +31,30 @@ class ImageEditorApp:
         self.canvas = tk.Canvas(self.root, width=200, height=200)
         self.canvas.pack()
 
-        open_button = ttk.Button(self.root, text='Open File', command=self.select_files)
-        open_button.pack(expand=True)
+        # File frame
+        self.file_frame = tk.Frame(self.root)
+        self.file_frame.pack(pady=10)
+
+        # Open image file
+        open_button = ttk.Button(self.file_frame, text='Open File', command=self.select_files)
+        open_button.grid(row=0, column=0, padx=10, pady=5)
+
+        # Save Button
+        self.save_button = ttk.Button(self.file_frame, text="Save Image", command=self.save_image, state=tk.DISABLED)
+        self.save_button.grid(row=0, column=1, padx=10, pady=5)
+
+        # URL Input and Button
+        self.url_frame = tk.Frame(self.root)
+        self.url_frame.pack(pady=10)
+
+        self.url_label = ttk.Label(self.url_frame, text="Image URL:")
+        self.url_label.pack(side=tk.LEFT, padx=10)
+
+        self.url_entry = ttk.Entry(self.url_frame, width=30, font=("Arial", 12))
+        self.url_entry.pack(side=tk.LEFT, padx=10)
+
+        self.load_url_button = ttk.Button(self.url_frame, text='Load from URL', command=self.open_url)
+        self.load_url_button.pack(side=tk.LEFT, padx=10)
 
         # Frame for buttons
         self.button_frame = tk.Frame(self.root, bg="#f0f0f0")
@@ -99,6 +122,23 @@ class ImageEditorApp:
         self.canvas.create_image(0, 0, anchor=tk.NW, image=photo)
         self.canvas.image = photo
 
+    def open_url(self):
+        try:
+            url = str(self.url_entry.get())
+            self.image = Image.open(urlopen(url))
+            self.preview = self.image.copy()
+            showinfo(title='Selected File', message=url)
+            self.update_preview()
+            self.save_button.config(state=tk.NORMAL)
+            if url.endswith((".png", ".jpg", ".jpeg")):
+                self.set_buttons_state(tk.NORMAL)
+                self.set_gif_state(tk.DISABLED)
+            elif url.endswith(".gif"):
+                self.set_gif_state(tk.NORMAL)
+                self.set_buttons_state(tk.DISABLED)
+        except Exception as e:
+            mb.showerror("Error", f"{e}")
+
     def select_files(self):
         """ Open file dialog and show selected file
         """
@@ -115,10 +155,10 @@ class ImageEditorApp:
         )
         if self.filename:
             self.image = Image.open(self.filename)
-            # TODO: self.image = Image.open(urlopen("https://python-pillow.org/assets/images/pillow-logo.png"))
             self.preview = self.image.copy()
             showinfo(title='Selected File', message=self.filename)
             self.update_preview()
+            self.save_button.config(state=tk.NORMAL)
             print(self.image.filename)
             print(self.image.size)
             if self.filename.endswith((".png", ".jpg", ".jpeg")):
