@@ -1,6 +1,6 @@
 # image-editing-scripts
 
-Some personal scripts i use to edit images pair with a TKinter window
+Some Pillow personal scripts i use to edit images pair with a TKinter window to make an image editor application.
 
 ## Functions
 
