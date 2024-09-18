@@ -5,7 +5,6 @@ from tkinter import messagebox as mb
 from tkinter.messagebox import showinfo
 import os
 from PIL import Image, ImageTk, ImageOps, ImageFilter, ImageDraw, ImageFont
-import PIL.ImageOps
 from urllib.request import urlopen
 
 class ImageModel:
@@ -49,7 +48,7 @@ class ImageModel:
         """ Invert Colors of image
         """
         if self.image:
-            self.image = PIL.ImageOps.invert(self.image)
+            self.image = ImageOps.invert(self.image)
             return self.image
 
     def transparency(self):
