@@ -22,6 +22,7 @@ class ImageController:
         self.view.emboss_gif_button.config(command=self.emboss_gif)
         self.view.pixelate_gif_button.config(command=self.pixelate_gif)
         self.view.comic_gif_button.config(command=self.comic_gif)
+        self.view.apply_button.config(command=self.apply_filter)
         #self.view.grayscale_button.config(command=self.convert_to_grayscale)
         #self.view.rotate_button.config(command=self.rotate_image)
 
@@ -112,6 +113,14 @@ class ImageController:
 
     def rotate_image(self):
         image = self.model.rotate_image()
+        if image:
+            self.view.update_preview(image)
+
+    def apply_filter(self):
+        selected_filter = self.view.filter_var.get()
+        filter_option = self.view.filter_options[selected_filter]
+        intensity_scale = self.view.intensity_scale.get()
+        image = self.model.apply_filter(filter_option, intensity_scale)
         if image:
             self.view.update_preview(image)
 

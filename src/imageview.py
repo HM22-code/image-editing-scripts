@@ -8,7 +8,7 @@ class ImageView:
         self.root.title("Image editing app")
         self.root.iconbitmap("assets/favicon.ico")
         self.root.resizable(False, False)
-        self.root.geometry("500x700")
+        self.root.geometry("600x700")
         self.root.eval("tk::PlaceWindow . center")
         self.root.config(bg="#f0f0f0")
         self.pack_widgets()
@@ -45,6 +45,32 @@ class ImageView:
         # URL load button
         self.load_url_button = ttk.Button(self.url_frame, text='Load from URL')
         self.load_url_button.pack(side=tk.LEFT, padx=10)
+
+        # Filter frame
+        self.filter_frame = tk.Frame(self.root, bg="#f0f0f0")
+        self.filter_frame.pack(pady=10)
+        self.filter_options = {
+            "Normal": "Normal",
+            "Blur": "Blur",
+            "Sharpness": "Sharpness",
+            "Brightness": "Brightness",
+            "Contrast": "Contrast"
+        }
+        self.filter_var = tk.StringVar()
+        self.filter_var.set("Normal")
+        # Filter dropdown
+        self.filter_dropdown = ttk.OptionMenu(self.filter_frame, self.filter_var, *self.filter_options.keys())
+        self.filter_dropdown.grid(row=0, column=0, padx=10, pady=5)
+        # Intensity label
+        self.intensity_label = ttk.Label(self.filter_frame, text="Intensity:")
+        self.intensity_label.grid(row=0, column=1, padx=10, pady=5)
+        # Intensity scale
+        self.intensity_scale = ttk.Scale(self.filter_frame, from_=0.1, to=2.0, orient=tk.HORIZONTAL)
+        self.intensity_scale.set(1.0)
+        self.intensity_scale.grid(row=0, column=2, padx=10, pady=5)
+        # Apply filter
+        self.apply_button = ttk.Button(self.filter_frame, text="Apply Filter", state=tk.DISABLED)
+        self.apply_button.grid(row=0, column=3, padx=10, pady=5)
 
         # Frame for buttons
         self.button_frame = tk.Frame(self.root, bg="#f0f0f0")
@@ -95,6 +121,7 @@ class ImageView:
         self.emboss_button.config(state=state)
         self.pixelate_button.config(state=state)
         self.comic_button.config(state=state)
+        self.apply_button.config(state=state)
 
     def set_gif_state(self, state):
         self.emboss_gif_button.config(state=state)

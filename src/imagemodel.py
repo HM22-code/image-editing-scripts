@@ -1,4 +1,4 @@
-from PIL import Image, ImageFilter, ImageDraw, ImageFont
+from PIL import Image, ImageFilter, ImageDraw, ImageFont, ImageEnhance
 import PIL.ImageOps
 from urllib.request import urlopen
 import os
@@ -7,9 +7,11 @@ import os
 class ImageModel:
     def __init__(self):
         self.image = None
+        self.copy = None
 
     def load_image(self, path):
         self.image = Image.open(path)
+        self.copy = self.image.copy()
         return self.image
 
     def load_url(self, url):
@@ -180,6 +182,22 @@ class ImageModel:
                 frames.append(result)
             frames[0].save('comic.gif', save_all = True, append_images = frames[1:],  optimize = False)
             frames[0].show()
+
+    def apply_filter(self, filter_option, intensity_scale):
+        if self.image:
+            if filter_option == "Normal":
+                self.image = self.copy
+            elif filter_option == "Brightness":
+                enhancer = ImageEnhance.Brightness(self.image)
+                self.image = enhancer.enhance(intensity_scale)
+            elif filter_option == "Contrast":
+                enhancer = ImageEnhance.Contrast(self.image)
+                self.image = enhancer.enhance(intensity_scale)
+            elif filter_option == "Blur":
+                self.image = self.image.filter(ImageFilter.GaussianBlur(intensity_scale))
+            elif filter_option == "Sharpness":
+                self.image = self.image.filter(ImageFilter.SHARPEN)
+            return self.image
 
     def watermarklogo(self):
         if self.image:
