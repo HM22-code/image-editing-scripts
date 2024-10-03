@@ -22,26 +22,28 @@ class ImageModel:
         """ Multiplicate an image inside herself
         """
         if self.image:
-            W,H=self.image.size
             self.image.convert("RGB")
+            W,H=self.image.size
             IT=int(input("Enter number of iterations: "))
-            for n in range(0,IT,1):
-                for y in range(0,H,1):
-                    for x in range(0,W,1):
-                        r,g,b=self.image.getpixel((x,y))
-                        x2=x//2
-                        y2=y//2
-                        # Reduce image to half
-                        self.image.putpixel((x2,y2),(r,g,b))
-                        # Copy reduced image to the right
-                        x3=x2+W//2
-                        self.image.putpixel((x3,y2),(r,g,b))
-                        # Copy of the top side of image reduced to the bottom side
-                for j in range(0,H//2,1):
-                    for i in range(0,W,1):
-                        r,g,b=self.image.getpixel((i,j))
-                        self.image.putpixel((i,j+H//2),(r,g,b))
+            for _ in range(0,IT,1):
+                self.multiplicate_image(H,W)
             return self.image
+
+    def multiplicate_image(self, h, w):
+        for y in range(0,h,1):
+            for x in range(0,w,1):
+                r,g,b=self.image.getpixel((x,y))
+                x2=x//2
+                y2=y//2
+                # Reduce image to half
+                self.image.putpixel((x2,y2),(r,g,b))
+                # Copy reduced image to the right
+                self.image.putpixel(((x2+w//2),y2),(r,g,b))
+                # Copy of the top side of image reduced to the bottom side
+        for j in range(0,h//2,1):
+            for i in range(0,w,1):
+                r,g,b=self.image.getpixel((i,j))
+                self.image.putpixel((i,j+h//2),(r,g,b))
 
     def invert(self):
         """ Invert Colors of image
@@ -146,7 +148,6 @@ class ImageModel:
         # Apply a series of filters to achieve the comic book style
         cartoon_image = image.copy()
         cartoon_image = cartoon_image.convert("L")
-        # cartoon_image = cartoon_image.point(lambda p: 255 if p > 128 else 0)
         cartoon_image = cartoon_image.filter(ImageFilter.CONTOUR)
         cartoon_image = cartoon_image.filter(ImageFilter.SMOOTH_MORE)
         return cartoon_image
@@ -199,18 +200,15 @@ class ImageModel:
                 self.image = self.image.filter(ImageFilter.SHARPEN)
             return self.image
 
-    def watermarklogo(self):
+    def watermarklogo(self, watermark_path):
         if self.image:
-            img_logo.show()
-            # convert image to black and white (grayscale)
+            img_logo = Image.open(watermark_path)
             img_logo = img_logo.convert("L")
             threshold = 50
             img_logo = img_logo.point(lambda x: 255 if x > threshold else 0)
             img_logo = img_logo.resize((img_logo.width // 2, img_logo.height // 2))
             img_logo = img_logo.filter(ImageFilter.CONTOUR)
-            img_logo.show()
             img_logo = img_logo.point(lambda x: 0 if x == 255 else 255)
-            img_logo.show()
             self.image.paste(img_logo, (480, 160), img_logo)
             return self.image
 

@@ -23,8 +23,6 @@ class ImageController:
         self.view.pixelate_gif_button.config(command=self.pixelate_gif)
         self.view.comic_gif_button.config(command=self.comic_gif)
         self.view.apply_button.config(command=self.apply_filter)
-        #self.view.grayscale_button.config(command=self.convert_to_grayscale)
-        #self.view.rotate_button.config(command=self.rotate_image)
 
     def multiplicate(self):
         image = self.model.multiplicate()
@@ -128,7 +126,7 @@ class ImageController:
         try:
             url = str(self.url_entry.get())
             image = self.model.load_url(url)
-            showinfo(title='Selected File', message=url)
+            showinfo(title='Selected URL File', message=url)
             self.view.update_preview(image)
             self.view.save_button.config(state=tk.NORMAL)
             self.view.show_button.config(state=tk.NORMAL)
@@ -144,7 +142,8 @@ class ImageController:
     def select_files(self):
         """ Open file dialog and show selected file
         """
-        filename = fd.askopenfilename(title='Open a file', initialdir='/', filetypes=(('image files', '.png'),('image files', '.jpg'),('image files', '.jpeg'),('image files', '.gif')))
+        typename = 'image files'
+        filename = fd.askopenfilename(title='Open a file', initialdir='/', filetypes=((typename, '.png'),(typename, '.jpg'),(typename, '.jpeg'),(typename, '.gif')))
         if filename:
             image = self.model.load_image(filename)
             showinfo(title='Selected File', message=filename)
@@ -158,9 +157,9 @@ class ImageController:
                 self.view.set_gif_state(tk.NORMAL)
                 self.view.set_buttons_state(tk.DISABLED)
             else:
-                showinfo(title='Selected File', message='Wrong file format selected')
+                showinfo(title='Info', message='Wrong file format selected')
         else:
-            showinfo(title='Selected File', message='No file selected.')
+            showinfo(title='Info', message='No file selected.')
 
     def save_image(self):
         if self.model.image:
