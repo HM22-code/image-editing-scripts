@@ -37,8 +37,9 @@ class Window:
         show_button.pack(expand=True)
 
     def update_preview(self):
-        self.filtered_image.thumbnail((500, 500))
-        photo = ImageTk.PhotoImage(self.filtered_image)
+        preview = self.filtered_image.copy()
+        preview.thumbnail((500, 500))
+        photo = ImageTk.PhotoImage(preview)
         self.canvas.create_image(0, 0, anchor=tk.NW, image=photo)
         self.canvas.image = photo
 
