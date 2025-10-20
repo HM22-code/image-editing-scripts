@@ -40,8 +40,9 @@ class Window:
         self.filter_dropdown.grid(row=0, column=0, padx=10, pady=5)
 
     def update_preview(self):
-        self.filtered_image.thumbnail((500, 500))
-        photo = ImageTk.PhotoImage(self.filtered_image)
+        preview = self.filtered_image.copy()
+        preview.thumbnail((500, 500))
+        photo = ImageTk.PhotoImage(preview)
         self.canvas.create_image(0, 0, anchor=tk.NW, image=photo)
         self.canvas.image = photo
 
